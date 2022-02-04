@@ -1,12 +1,12 @@
 # spotify bot discord
  bot wyszukujący informacje o piosenkach i artystach poprzez api spotify
 
-#wymagane biblioteki:
+**wymagane biblioteki**:
 - axios
 - discord.js
 - qs
 
-#pliki wymagane do działania bota to:
+**pliki wymagane do działania bota to**:
 - bot.js
 - deploy.js
 - config.json zawierający:
