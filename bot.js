@@ -14,12 +14,8 @@ client.on('ready', () => {
     console.log(`${client.user.tag} łączy się z discordem`);
     client.user.setActivity('your mom moaning', {type: "LISTENING"});
     refresh();
-    setTimeout(() => {
-        console.log('Wygenerowano pierwszy token');
-    }, 200);
     setInterval(() => {
         refresh();
-        console.log("Odświeżono token")
     }, 3590000); 
 });
 
@@ -37,7 +33,7 @@ async function refresh() {
         qs.stringify(data),
         headerstoken);
     spotifytoken = response.data.access_token;
-    
+    console.log("Odświeżono token")
 }
 
 function getArtistInformation(artist) {
