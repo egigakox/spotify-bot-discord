@@ -18,7 +18,6 @@
   - secret: pod client id w dashboardzie spotify
   - base64 to clientid:secret zakodowane np na stronie https://www.base64encode.org/
   - refresh token pobierany z api spotify:
-    -```
-    curl -H "Authorization: Basic <dane base64>" -d grant_type=authorization_code -d code= <kod> -d redirect_uri=<musi być taki sam  jak w ustawieniach aplikacji spotify> https://accounts.spotify.com/api/token
-    ```
+    ->
+    curl -H "Authorization: Basic <dane base64>" -d grant_type=authorization_code -d code= <kod> -d redirect_uri=<musi być taki sam  jak w ustawieniach aplikacji spotify>             https://accounts.spotify.com/api/token
  
