@@ -11,6 +11,7 @@
 - deploy.js
 - config.json zawierający:
   - token discorda, url api spotify, discord id oraz client id, secret, dane spotify zakodowane w base64 oraz refresh token
+**Dane do config.json**
   - token: zakładka bot w discord developer portal
   - adres api spotify: https://api.spotify.com/v1
   - discordid: client id z zakładki oauth2 w developer portal
