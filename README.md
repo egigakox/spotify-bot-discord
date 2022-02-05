@@ -21,3 +21,5 @@
     ```
     curl -H "Authorization: Basic <dane base64>" -d grant_type=authorization_code -d code= <kod> -d redirect_uri=<musi być taki sam  jak w ustawieniach aplikacji spotify>             https://accounts.spotify.com/api/token
     ```
+    kod do komendy wyżej pochodzi z https://accounts.spotify.com/authorize?client_id=<clientid>&response_type=code&redirect_uri=<redirect uri zakodowane             https://www.urlencoder.org/>
+    
