@@ -10,6 +10,10 @@ var spotifytoken;
 
 var spotifyinfo = [];
 
+//
+//powiadomienie o działaniu bota
+//
+
 client.on('ready', () => {
     console.log(`${client.user.tag} łączy się z discordem`);
     client.user.setActivity('your mom moaning', {type: "LISTENING"});
@@ -18,6 +22,10 @@ client.on('ready', () => {
         refresh();
     }, 3590000); 
 });
+
+//
+//pobieranie klucza do API
+//
 
 async function refresh() {
     const url = 'https://accounts.spotify.com/api/token'
@@ -35,6 +43,10 @@ async function refresh() {
     spotifytoken = response.data.access_token;
     console.log("Odświeżono token")
 }
+
+//
+//info o artyscie
+//
 
 function getArtistInformation(artist) {
     var headers = {
@@ -60,6 +72,11 @@ function getArtistInformation(artist) {
         }
    })       
 }
+
+//
+//info o piosence
+//
+
 var songinfo = [];
 function getSongInformation(songtitle) {
     var headers = {
@@ -82,6 +99,10 @@ function getSongInformation(songtitle) {
         }
 })
 }
+
+//
+//komendy 
+//
 
 client.on('interactionCreate', async interaction => {
     if (!interaction.isCommand()) return;
@@ -118,34 +139,55 @@ client.on('interactionCreate', async interaction => {
             } else {
                 var embeddane = new MessageEmbed().setColor('#FF2D00').setTitle(artist).addFields({name: 'Błąd', value: ':x:'+spotifyinfo[0]});
             }
-            interaction.reply({embeds: [embeddane]});
+            try {
+                interaction.reply({embeds: [embeddane]});
+            } catch (error) {
+                console.error(error);
+            }
         }, 200)
     } else if (interaction.commandName === 'song') {
-        var songtitle = interaction.options.getString('tytuł');
-        getSongInformation(songtitle);
-        setTimeout(function() {
-            if(songinfo.length == 6) {
-                var title = songinfo[0];
-                var release_date = songinfo[1];
-                var artist_name = songinfo[2];
-                var album_name = songinfo[3];
-                var uri = songinfo[4];
-                var image = songinfo[5];
+        try {
+            var songtitle = interaction.options.getString('tytuł');
+            getSongInformation(songtitle);
+            setTimeout(function() {
+                if(songinfo.length == 6) {
+                    var title = songinfo[0];
+                    var release_date = songinfo[1];
+                    var artist_name = songinfo[2];
+                    var album_name = songinfo[3];
+                    var uri = songinfo[4];
+                    var image = songinfo[5];
 
-                var embedsong = new MessageEmbed().setColor('#1DB954').setTitle('Informacje o piosence: '+title).setURL(uri).setThumbnail(image)
-                .addFields(
-                    {name: 'Tytuł: ', value: title},
-                    {name: 'Wykonawca: ', value: artist_name},
-                    {name: 'Album: ', value: album_name},
-                    {name: 'Data wydania: ', value: release_date},
-                ).setFooter({text: 'Dane pobrane z API spotify'});
-                
-            } else if (songinfo.length == 1) {
-                var embedsong = new MessageEmbed().setColor('RED').setTitle(songtitle).addFields({name: 'Błąd: ', value: ':x: '+songinfo[0]});
-            }
-            interaction.reply({embeds: [embedsong]});
-        }, 200)
+                    var embedsong = new MessageEmbed().setColor('#1DB954').setTitle('Informacje o piosence: '+title).setURL(uri).setThumbnail(image)
+                    .addFields(
+                        {name: 'Tytuł: ', value: title},
+                        {name: 'Wykonawca: ', value: artist_name},
+                        {name: 'Album: ', value: album_name},
+                        {name: 'Data wydania: ', value: release_date},
+                    ).setFooter({text: 'Dane pobrane z API spotify'});
+                    
+                } else if (songinfo.length == 1) {
+                    throw new SongNotFoundException();
+                    //var embedsong = new MessageEmbed().setColor('RED').setTitle(songtitle).addFields({name: 'Błąd: ', value: ':x: '+songinfo[0]});
+                }
+                try {
+                    interaction.reply({embeds: [embedsong]});
+                } catch (error) {
+                    console.error("Nie udało się wysłać embeda")
+                }
+            }, 200)
+            } catch(SongNotFoundException) {
+                interaction.reply({embers: [new MessageEmbed().setColor('RED').setTitle(songtitle).addFields({name: 'Błąd: ', value: ':x: '+songinfo[0]})]})
+            }      
     }
 });
+
+//
+//autorskie rozwiązanie
+//
+
+process.on('uncaughtException', function (error) {
+    console.error("Wystąpił bład LIKE");
+ });
 
 client.login(token);
